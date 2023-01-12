@@ -6,6 +6,7 @@ GENE_LENGTH = 50
 class Individual:
   def __init__(self):
       self.gene = [random.randint(-1,1) for _ in range(GENE_LENGTH)]
+      self.MUTATION_RATE = 0.05
       self.fitness = self.computeFittness()
 
   def computeFittness(self):
@@ -15,8 +16,10 @@ class Individual:
     return fitness
     
   def mutate(self):
-    pass
-  
+    for i in range(GENE_LENGTH):
+      if random.random() < self.MUTATION_RATE:
+        self.gene[i] = self.gene[i] * (-1)
+
   def printInfo(self):
     a = [] ; b = []
     for i, g in enumerate(self.gene):
