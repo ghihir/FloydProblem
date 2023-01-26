@@ -67,22 +67,20 @@ class Population:
 
 
   def evolve(self):
-    i = 0
-    # エリート保存戦略（半分はこれで決める）
     self.individuals.sort(key=attrgetter('fitness'), reverse=True)
-    while i < self.number // 2:
-      self.next_individuals[i] = self.individuals[i]
-      i += 1
-    # 交差によって新しい個体を作成（残り半分）
-    while i < self.number:
-      individual1 = self.selectParents()
-      individual2 = self.selectParents()
-      self.next_individuals[i] = self.crossover(individual1, individual2)
-      i += 1
+    for i in range(len(self.individuals)):
+      # エリート保存戦略（半分はこれで決める）
+      if i < self.number // 2:
+        self.next_individuals[i] = self.individuals[i]
+      # 交差によって新しい個体を作成（残り半分）
+      else:
+        individual1 = self.selectParents()
+        individual2 = self.selectParents()
+        self.next_individuals[i] = self.crossover(individual1, individual2)
     # 突然変異
     for next_individual in self.next_individuals:
       next_individual.mutate()
-    # 世代の入れ替え
+    # 世代のスケール
     self.individuals = self.next_individuals[:]
 
     
